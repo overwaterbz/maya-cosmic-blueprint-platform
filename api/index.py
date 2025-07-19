@@ -1,29 +1,46 @@
 #!/usr/bin/env python3
 """
-Vercel Entry Point for Maya Cosmic Blueprint Platform
-Proper serverless adapter using Mangum for FastAPI
+Vercel Entry Point - Maya Cosmic Blueprint Platform
 """
 
 import sys
 import os
 
-# Add the parent directory to the Python path so we can import app
+# Add current directory to Python path
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 try:
-    from mangum import Mangum
-    # Import the complete FastAPI application
+    # Import the FastAPI app
     from app import app
     
-    # Create proper serverless handler using Mangum
-    # This preserves ALL functionality: authentication, AI guidance, soul contracts, cosmic blueprints
-    handler = Mangum(app)
+    # Use app directly for Vercel
+    handler = app
     
+except ImportError as e:
+    # Simple fallback
+    from fastapi import FastAPI
+    from fastapi.responses import HTMLResponse
+    
+    app = FastAPI()
+    
+    @app.get("/")
+    def root():
+        return HTMLResponse("""
+        <html><body>
+        <h1>Maya Cosmic Blueprint Platform</h1>
+        <p>Import Error: Missing dependencies</p>
+        <p>Error: """ + str(e) + """</p>
+        </body></html>
+        """)
+    
+    handler = app
+
 except Exception as e:
-    # Fallback to basic response if import fails
+    # Basic error handler
     def handler(event, context):
         return {
             'statusCode': 500,
-            'headers': {'Content-Type': 'text/plain'},
-            'body': f'Maya Platform Import Error: {str(e)}'
+            'headers': {'Content-Type': 'text/html'},
+            'body': f'<h1>Maya Platform Error</h1><p>{str(e)}</p>'
         }
