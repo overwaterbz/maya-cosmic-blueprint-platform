@@ -1,0 +1,5 @@
+/* Emergency Deployment Trigger - 2025-07-21T21:02:14.258221 */
+/* Force Vercel to rebuild and deploy corrected homepage */
+body { 
+    --deployment-trigger: "1753131734.258229";
+}
