@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Magic is You - Maya Cosmic Blueprint Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #fef7ed 0%, #f59e0b 100%);
+            min-height: 100vh;
+            color: #1e3a8a;
+        }
+        
+        /* Floating Maya Hieroglyphs */
+        .floating-hieroglyph {
+            position: fixed;
+            font-size: 2rem;
+            opacity: 0.3;
+            animation: float 20s infinite linear;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); }
+            100% { transform: translateY(-100px) rotate(360deg); }
+        }
+        
+        .floating-hieroglyph:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .floating-hieroglyph:nth-child(2) { left: 20%; animation-delay: -5s; }
+        .floating-hieroglyph:nth-child(3) { left: 30%; animation-delay: -10s; }
+        .floating-hieroglyph:nth-child(4) { left: 40%; animation-delay: -15s; }
+        .floating-hieroglyph:nth-child(5) { left: 60%; animation-delay: -8s; }
+        .floating-hieroglyph:nth-child(6) { left: 70%; animation-delay: -12s; }
+        .floating-hieroglyph:nth-child(7) { left: 80%; animation-delay: -18s; }
+        
+        /* Mobile responsive - hide floating glyphs */
+        @media (max-width: 640px) {
+            .floating-hieroglyph {
+                display: none;
+            }
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #1e3a8a, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #374151;
+        }
+        
+        .header .features {
+            font-size: 1.1rem;
+            color: #6b7280;
+            margin-bottom: 2rem;
+        }
+        
+        /* Registration Form */
+        .registration-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .registration-section h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            color: #1e3a8a;
+        }
+        
+        .registration-section p {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #6b7280;
+            font-size: 1.1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #7c3aed;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #7c3aed, #ec4899);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
+        }
+        
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+        
+        .login-link a {
+            color: #7c3aed;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Login Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #aaa;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            color: #000;
+        }
+        
+        /* Cosmic Elements Preview */
+        .cosmic-preview {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .cosmic-preview h2 {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #1e3a8a;
+        }
+        
+        .cosmic-preview p {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #6b7280;
+            font-size: 1.1rem;
+        }
+        
+        .elements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .element-category {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 2px solid #e5e7eb;
+        }
+        
+        .element-category h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #1e3a8a;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .element-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem;
+            margin-bottom: 0.5rem;
+            background: rgba(124, 58, 237, 0.05);
+            border-radius: 8px;
+        }
+        
+        .element-item .icon {
+            font-size: 1.2rem;
+        }
+        
+        .element-item .name {
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .element-item .desc {
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+        
+        /* Soul Contract CTA */
+        .soul-contract-cta {
+            background: linear-gradient(135deg, #7c3aed, #ec4899);
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+        }
+        
+        .soul-contract-cta h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .soul-contract-cta p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .soul-contract-btn {
+            display: inline-block;
+            padding: 16px 32px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .soul-contract-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .header .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .registration-section,
+            .cosmic-preview,
+            .soul-contract-cta {
+                padding: 1.5rem;
+            }
+            
+            .elements-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Maya Hieroglyphs -->
+    <div class="floating-hieroglyph">𓂀</div>
+    <div class="floating-hieroglyph">𓃭</div>
+    <div class="floating-hieroglyph">𓄿</div>
+    <div class="floating-hieroglyph">𓅓</div>
+    <div class="floating-hieroglyph">𓆃</div>
+    <div class="floating-hieroglyph">𓇯</div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>✨ The Magic is You ✨</h1>
+            <p class="subtitle">Discover Your Sacred Maya Cosmic Blueprint</p>
+            <p class="features">🏛️ Ancient Maya Astrology • 🔮 Shamanic Guidance • 🌟 3,000+ Years of Wisdom</p>
+        </div>
+
+        <!-- Registration Form -->
+        <div class="registration-section">
+            <h2>🏛️ Begin Your Sacred Journey</h2>
+            <p>Unlock your personalized Maya cosmic blueprint and soul contract</p>
+            
+            <form id="registrationForm">
+                <div class="form-group">
+                    <label for="fullName">👤 Full Name (for sacred numerology)</label>
+                    <input type="text" id="fullName" name="fullName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">📧 Email Address</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">🔒 Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="birthDate">📅 Birth Date *</label>
+                    <input type="date" id="birthDate" name="birthDate" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="birthTime">🕐 Birth Time (optional)</label>
+                    <input type="time" id="birthTime" name="birthTime">
+                    <small style="color: #6b7280;">For accurate astrological calculations</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="birthLocation">🌍 Birth Location (optional)</label>
+                    <input type="text" id="birthLocation" name="birthLocation" placeholder="City, Country">
+                    <small style="color: #6b7280;">For complete astrological analysis</small>
+                </div>
+                
+                <button type="submit" class="submit-btn">🏛️ Create My Maya Profile</button>
+            </form>
+            
+            <div class="login-link">
+                <p>Already have an account? <a href="#" onclick="showLoginModal()">Login to Your Profile</a></p>
+            </div>
+        </div>
+
+        <!-- Cosmic Elements Preview -->
+        <div class="cosmic-preview">
+            <h2>🌟 Your Cosmic Blueprint Awaits</h2>
+            <p>Once you register, we'll calculate your complete personalized cosmic blueprint using authentic Maya astronomy</p>
+            
+            <div class="elements-grid">
+                <div class="element-category">
+                    <h3>🔮 Core Maya Elements</h3>
+                    <div class="element-item">
+                        <span class="icon">🔸</span>
+                        <div>
+                            <div class="name">Day Sign</div>
+                            <div class="desc">Your Maya glyph (e.g. Ahau Sun)</div>
+                        </div>
+                    </div>
+                    <div class="element-item">
+                        <span class="icon">🎵</span>
+                        <div>
+                            <div class="name">Galactic Tone</div>
+                            <div class="desc">Your cosmic frequency (1-13)</div>
+                        </div>
+                    </div>
+                    <div class="element-item">
+                        <span class="icon">🆔</span>
+                        <div>
+                            <div class="name">Kin Number</div>
+                            <div class="desc">Your position in 260-day cycle</div>
+                        </div>
+                    </div>
+                    <div class="element-item">
+                        <span class="icon">🔥</span>
+                        <div>
+                            <div class="name">Element</div>
+                            <div class="desc">Fire, Water, Air, or Earth</div>
+                        </div>
+                    </div>
+                    <div class="element-item">
+                        <span class="icon">📱</span>
+                        <div>
+                            <div class="name">Life Path</div>
+                            <div class="desc">Your soul's journey purpose</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="element-category">
+                    <h3>📅 Sacred Calendar Elements</h3>
+                    <div class="element-item">
+                        <span class="icon">⚡</span>
+                        <div>
+                            <div class="name">Trecena</div>
+                            <div class="desc">13-day sacred cycle</div>
+                        </div>
+                    </div>
+                    <div class="element-item">
+                        <span class="icon">🌙</span>
+                        <div>
+                            <div class="name">Wavespell</div>
+                            <div class="desc">13-day consciousness journey</div>
+                        </div>
+                    </div>
+                    <div class="element-item">
+                        <span class="icon">🏰</span>
+                        <div>
+                            <div class="name">Castle</div>
+                            <div class="desc">52-day spiritual castle</div>
+                        </div>
+                    </div>
+                    <div class="element-item">
+                        <span class="icon">🌺</span>
+                        <div>
+                            <div class="name">Color Family</div>
+                            <div class="desc">Red, White, Blue, Yellow</div>
+                        </div>
+                    </div>
+                    <div class="element-item">
+                        <span class="icon">🏛️</span>
+                        <div>
+                            <div class="name">Tribe</div>
+                            <div class="desc">Maya tribal connection</div>
+                        </div>
+                    </div>
+                    <div class="element-item">
+                        <span class="icon">🎼</span>
+                        <div>
+                            <div class="name">Harmonic</div>
+                            <div class="desc">4-day pattern alignment</div>
+                        </div>
+                    </div>
+                    <div class="element-item">
+                        <span class="icon">✨</span>
+                        <div>
+                            <div class="name">Activation Portal</div>
+                            <div class="desc">Special energy gateway</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="element-category">
+                    <h3>✨ Maya Cross & Calendar Systems</h3>
+                    <div class="element-item">
+                        <span class="icon">🧭</span>
+                        <div>
+                            <div class="name">Guide Sign</div>
+                            <div class="desc">Higher guidance</div>
+                        </div>
+                    </div>
+                    <div class="element-item">
+                        <span class="icon">⚖️</span>
+                        <div>
+                            <div class="name">Antipode Sign</div>
+                            <div class="desc">Balancing opposite</div>
+                        </div>
+                    </div>
+                    <div class="element-item">
+                        <span class="icon">🔮</span>
+                        <div>
+                            <div class="name">Occult Sign</div>
+                            <div class="desc">Hidden powers</div>
+                        </div>
+                    </div>
+                    <div class="element-item">
+                        <span class="icon">🌙</span>
+                        <div>
+                            <div class="name">Lord of Night</div>
+                            <div class="desc">9-day cycle guardian</div>
+                        </div>
+                    </div>
+                    <div class="element-item">
+                        <span class="icon">☀️</span>
+                        <div>
+                            <div class="name">Haab Date</div>
+                            <div class="desc">Solar calendar position</div>
+                        </div>
+                    </div>
+                    <div class="element-item">
+                        <span class="icon">📊</span>
+                        <div>
+                            <div class="name">Long Count</div>
+                            <div class="desc">Astronomical dating</div>
+                        </div>
+                    </div>
+                    <div class="element-item">
+                        <span class="icon">🎯</span>
+                        <div>
+                            <div class="name">Year Bearer</div>
+                            <div class="desc">Annual energy influence</div>
+                        </div>
+                    </div>
+                    <div class="element-item">
+                        <span class="icon">🌕</span>
+                        <div>
+                            <div class="name">Moon Phase</div>
+                            <div class="desc">Lunar cycle connection</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="element-category">
+                    <h3>🌿 Spiritual & Natural Elements</h3>
+                    <div class="element-item">
+                        <span class="icon">🦌</span>
+                        <div>
+                            <div class="name">Spirit Animal</div>
+                            <div class="desc">Power animal ally</div>
+                        </div>
+                    </div>
+                    <div class="element-item">
+                        <span class="icon">💎</span>
+                        <div>
+                            <div class="name">Crystal Ally</div>
+                            <div class="desc">Healing crystal connection</div>
+                        </div>
+                    </div>
+                    <div class="element-item">
+                        <span class="icon">🌿</span>
+                        <div>
+                            <div class="name">Plant Medicine</div>
+                            <div class="desc">Sacred plant ally</div>
+                        </div>
+                    </div>
+                    <div class="element-item">
+                        <span class="icon">🧘</span>
+                        <div>
+                            <div class="name">Chakra Resonance</div>
+                            <div class="desc">Energy center alignment</div>
+                        </div>
+                    </div>
+                    <div class="element-item">
+                        <span class="icon">⚡</span>
+                        <div>
+                            <div class="name">Human Design</div>
+                            <div class="desc">Energy type & strategy</div>
+                        </div>
+                    </div>
+                    <div class="element-item">
+                        <span class="icon">🌳</span>
+                        <div>
+                            <div class="name">Tree of Life</div>
+                            <div class="desc">Primary Sephiroth</div>
+                        </div>
+                    </div>
+                    <div class="element-item">
+                        <span class="icon">🌲</span>
+                        <div>
+                            <div class="name">Secondary Tree</div>
+                            <div class="desc">Secondary Sephiroth</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Soul Contract CTA -->
+        <div class="soul-contract-cta">
+            <h2>🔮 Discover Your Sacred Soul Contract</h2>
+            <p>Unlock the deepest mysteries of your soul's purpose and divine mission</p>
+            <a href="#" class="soul-contract-btn" onclick="showLoginModal()">Begin Your Soul Journey</a>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeLoginModal()">&times;</span>
+            <h2>🔮 Welcome Back, Cosmic Soul</h2>
+            <p>Return to your sacred cosmic blueprint and spiritual wisdom</p>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">📧 Email Address</label>
+                    <input type="email" id="loginEmail" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="loginPassword">🔒 Password</label>
+                    <input type="password" id="loginPassword" name="password" required>
+                </div>
+                
+                <button type="submit" class="submit-btn">🌟 Login to Your Cosmic Profile</button>
+            </form>
+            
+            <div class="login-link">
+                <p><a href="#" onclick="showForgotPasswordModal()">Forgot Password?</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal Functions
+        function showLoginModal() {
+            document.getElementById('loginModal').style.display = 'block';
+        }
+        
+        function closeLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
+        }
+        
+        // Registration Form Handling
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const registrationData = {
+                full_name: formData.get('fullName'),
+                email: formData.get('email'),
+                password: formData.get('password'),
+                birth_date: formData.get('birthDate'),
+                birth_time: formData.get('birthTime'),
+                birth_location: formData.get('birthLocation')
+            };
+            
+            // Store in localStorage for demo (replace with actual API call)
+            localStorage.setItem('maya_user_registration', JSON.stringify(registrationData));
+            
+            alert('🌟 Your cosmic registration is complete! Your Maya blueprint is being calculated...');
+            
+            // Redirect to dashboard (replace with actual redirect)
+            window.location.href = '/user-profile.html';
+        });
+        
+        // Login Form Handling
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // Simple validation (replace with actual authentication)
+            const savedRegistration = localStorage.getItem('maya_user_registration');
+            if (savedRegistration) {
+                const userData = JSON.parse(savedRegistration);
+                if (userData.email === email) {
+                    alert('🌟 Welcome back to your cosmic journey!');
+                    window.location.href = '/user-profile.html';
+                    return;
+                }
+            }
+            
+            alert('Please check your credentials or register first.');
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('loginModal');
+            if (event.target === modal) {
+                closeLoginModal();
+            }
+        });
+    </script>
+</body>
+</html>
